@@ -7,17 +7,31 @@ public class Block {
     ArrayList<Transaction> transactions;
     Timestamp timestamp;
 
-    public Block() {
-        prevhash = "-1";
-        timestamp = new Timestamp(System.currentTimeMillis());
-        transactions = new ArrayList<>();
+    public Block(double amount) {
+        this.prevhash = "-1";
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.transactions = new ArrayList<>();
+        this.transactions.add(new Transaction(this, "RichUncleFromTheUSA", amount));
+        this.hash = "$" + hashCode() + "$";
     }
-    public static void main (String args[])
-    {
 
+    public Block(Blockchain blockchain){
+        blockchain.Lastblock.hash = "$" + hashCode() + "$";
+        this.prevhash = blockchain.Lastblock.hash;
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.transactions = new ArrayList<>();
+        this.hash = "$" + hashCode() + "$";
+        blockchain.blocks.add(this);
+        blockchain.Lastblock=this;
+    }
 
-        int counter;
-        Transaction first = new Transaction();
-        first.hash = "Hash transakcji";
+    @Override
+    public String toString() {
+        return "Block{" +
+                "hash='" + hash + '\'' +
+                ", prevhash='" + prevhash + '\'' +
+                ", transactions=" + transactions +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }
